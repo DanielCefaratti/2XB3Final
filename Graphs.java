@@ -36,55 +36,7 @@ public class Graphs {
     	if (v == w) count++;
     	return count/2; 
     }*/
-    /*
-    public static Iterable DFS(Graph G, int src, int des){
-        boolean[] visited = new boolean[G.V()];
-        int[] edgeTo = new int[G.V()];
-        for (int i = 0; i < edgeTo.length; ++i) edgeTo[i] = -1;
-
-        dfs(G, src, visited, edgeTo);
-
-        if (visited[des]){
-            ArrayList<Integer> path = new ArrayList<Integer>();
-            for (int i = des; i != src; i = edgeTo[i])
-                path.add(i);
-            path.add(src);
-            Collections.reverse(path);
-            return path;
-        }else return null;
-    }
-    /*
-    private static void dfs(Graph G, Patent src, boolean[] visited, int[] edgeTo){
-    	visited[src] = true;
-    	for (int w : G.adj(src))
-    		if (!visited[w]){
-    			edgeTo[w] = src;
-    			dfs(G, w, visited, edgeTo);
-    		}
-    	
-    }*/
-
-    public static Iterable BFS(Graph G, int src, int des){
-        boolean[] visited = new boolean[G.V()];
-        int[] edgeTo = new int[G.V()];
-        for (int i = 0; i < edgeTo.length; ++i) edgeTo[i] = -1;
-
-        bfs(G, src, visited, edgeTo);
-
-        if (visited[des]){
-            ArrayList<Integer> path = new ArrayList<Integer>();
-            for (int i = des; i != src; i = edgeTo[i])
-                path.add(i);
-            path.add(src);
-            Collections.reverse(path);
-            return path;
-        }else return null;
-    }
-
-    private static void bfs(Graph G, int src, boolean[] visited, int[] edgeTo){
-        // TODO: Verify the connectivity of the graph from src iteratively.
-
-    }
+  
 
 }
 
