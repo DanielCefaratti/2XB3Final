@@ -3,40 +3,40 @@ package wt;
 import java.util.*;
 
 public class Graphs {
-    public static int degree(Graph G, int v){
+    public static int degree(Graph G, Patent v){
     	int degree = 0;
-    	for (int w : G.adj(v)) degree++;
+    	for (Patent w : G.adj(v.getId())) degree++;
     	return degree;
     }
     
-    public static int superDegree(Graph G, int v){
+    public static int superDegree(Graph G, Patent v){
     	int degreeScore = 0;
-    	for (int w : G.adj(v)){
+    	for (Patent w : G.adj(v.getId())){
     		degreeScore = degreeScore + 1 + superDegree(G, w);
     	}
     	return degreeScore;
     }
-
+    /*
     public static int maxDegree(Graph G){
     	int max = 0;
-    	for (int v = 0; v < G.V(); v++)
+    	for (Patent w: )
     	if (degree(G, v) > max)
     	max = degree(G, v);
     	return max;
-    }
+    }*/
 
     public static int avgDegree(Graph G){
     	 return 2 * G.E() / G.V();
     }
-
+    /*
     public static int numberOfSelfLoops(Graph G){
     	int count = 0;
     	for (int v = 0; v < G.V(); v++)
     	for (int w : G.adj(v))
     	if (v == w) count++;
     	return count/2; 
-    }
-
+    }*/
+    /*
     public static Iterable DFS(Graph G, int src, int des){
         boolean[] visited = new boolean[G.V()];
         int[] edgeTo = new int[G.V()];
@@ -53,8 +53,8 @@ public class Graphs {
             return path;
         }else return null;
     }
-
-    private static void dfs(Graph G, int src, boolean[] visited, int[] edgeTo){
+    /*
+    private static void dfs(Graph G, Patent src, boolean[] visited, int[] edgeTo){
     	visited[src] = true;
     	for (int w : G.adj(src))
     		if (!visited[w]){
@@ -62,7 +62,7 @@ public class Graphs {
     			dfs(G, w, visited, edgeTo);
     		}
     	
-    }
+    }*/
 
     public static Iterable BFS(Graph G, int src, int des){
         boolean[] visited = new boolean[G.V()];

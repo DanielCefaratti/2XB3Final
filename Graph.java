@@ -9,35 +9,33 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Graph {
-    private ArrayList<ArrayList<Integer>> adj;
+	private int numPatent = 4551941;
+    private ArrayList<ArrayList<Patent>> adj;
+    private ArrayList<Patent> masterList = new ArrayList<Patent>(numPatent);
+    
     private int nV = 0;
     private int nE = 0;
 
     public Graph(){
-        this.adj = new ArrayList<ArrayList<Integer>>();
+        this.adj = new ArrayList<ArrayList<Patent>>();
     }
 
     public Graph(int nV){
-        this.adj = new ArrayList<ArrayList<Integer>>();
+        this.adj = new ArrayList<ArrayList<Patent>>();
         for (int i = 1; i <= nV; ++i) {
-            this.adj.add(new ArrayList<Integer>());
+            this.adj.add(new ArrayList<Patent>());
             this.nV ++;
         }
     }
 
-    public void addEdge(int v, int w){
-        // TODO: Add an edge from v to w (symmetrically).
-    	if (v != w)
-    	{
-    		adj.get(v).add(w); // Add w to v’s list.
-    		
-    		// symmetrical add removed to make directed graph
-        	// adj.get(w).add(v); // Add v to w’s list.
+    public void addEdge(Patent v, Patent w){
+    		adj.get(v.getId()).add(w); // Add w to v’s list.
+    		v.addBelow(w);
+    		w.addAbove(v);
         	nE++;
-    	}
     }
 
-    public Iterable<Integer> adj(int v){
+    public Iterable<Patent> adj(int v){
         return adj.get(v);
     }
 
@@ -74,14 +72,16 @@ public class Graph {
         
         
     	Scanner s = new Scanner(f);
-    	
+    	int index = 0;
     	while(s.hasNextLine()){
 			String connection = s.nextLine();
 			String[] connections = {};
 			if(!connection.isEmpty()){
-				connections = connection.split("	");
+				connections = connection.split("//s*");
 			}
-			graph.addEdge(Integer.parseInt(connections[1]), Integer.parseInt(connections[0]));
+			Patent temp1 = new Patent(Integer.parseInt(connections[1]));
+			Patent temp2 = new Patent(Integer.parseInt(connections[0]));
+			graph.addEdge(temp1, temp2);
 		}
         
         System.out.print(graph.toString());
