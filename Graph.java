@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Graph {
-	private int numPatent = 4551941;
+	
     private ArrayList<ArrayList<Patent>> adj;
-    private ArrayList<Patent> masterList = new ArrayList<Patent>(numPatent);
+  
     
     private int nV = 0;
     private int nE = 0;

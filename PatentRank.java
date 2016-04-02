@@ -4,10 +4,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class PatentRank {
-
+	private static int numPatent = 4551941;
+	private static ArrayList<Patent> masterList = new ArrayList<Patent>(numPatent);
+	private static ArrayList<Patent> topLevel = new ArrayList<Patent>();
+	
 public static void main(String[] args) throws IOException{
     	
         
@@ -28,9 +32,35 @@ public static void main(String[] args) throws IOException{
 			if(!connection.isEmpty()){
 				connections = connection.split("//s*");
 			}
-			Patent temp1 = new Patent(Integer.parseInt(connections[1]));
-			Patent temp2 = new Patent(Integer.parseInt(connections[0]));
-			graph.addEdge(temp1, temp2);
+			int p1 = Integer.parseInt(connections[1]);
+			int p0 = Integer.parseInt(connections[0]);
+			Patent to;
+			Patent from;
+			if (masterList.get(p1) == null)//if the index contains no node
+			{
+				to = new Patent(p1);//make a new node
+				masterList.set(p1, to);//add to master list
+				topLevel.add(to);//add to top level list
+			}
+			else
+			{
+				to = masterList.get(p1);
+			}
+			if (masterList.get(p0) == null)//if masterlist does not contain node
+			{
+				from = new Patent(p0);//make new node
+				masterList.set(p0, from);//add node to master list
+			}
+			else
+			{
+				from = masterList.get(p0);//set from
+				if (topLevel.contains(from))//remove from in the top level list if it exists
+				{
+					topLevel.remove(from);
+				}
+			}
+			
+			graph.addEdge(from, to);
 		}
         
         System.out.print(graph.toString());
