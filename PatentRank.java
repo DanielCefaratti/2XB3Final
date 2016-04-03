@@ -11,6 +11,8 @@ public class PatentRank {
 	private static int numPatent = 4551941;
 	private static ArrayList<Patent> masterList = new ArrayList<Patent>(numPatent);
 	private static ArrayList<Patent> topLevel = new ArrayList<Patent>();
+	private static DepthPathing dfs;
+	private static Patent user = new Patent(0);
 	
 public static void main(String[] args) throws IOException{
     	
@@ -62,7 +64,7 @@ public static void main(String[] args) throws IOException{
 			
 			graph.addEdge(from, to);
 		}
-        
+        dfs = new DepthPathing(graph, user);
         System.out.print(graph.toString());
         
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -80,9 +82,48 @@ public static void main(String[] args) throws IOException{
             
             //System.out.println(Graphs.superDegree(graph, Integer.parseInt(input)));
          }
-        
-        
-
     }
-
+	//get the top most patent
+	public Patent topPat(DepthPathing dp)
+	{
+		Patent top = new Patent(0);
+		int index = 0;
+		for (Patent n:topLevel)
+		{
+			int index1 = 0;
+			for (Patent v:dp.pathTo(n))
+			{
+				index1++;
+			}
+			if (index1 > index)
+			{
+				index = index1;
+				top = n;
+			}
+		}
+		return top;
+	}
+	//get the bottom most patent recursively
+	public Patent botPat(Graph g, Patent user)
+	{
+		Patent bottom = new Patent(0);
+		int maxDegree = 0;
+		if (!user.getBelow().isEmpty())
+		{
+			for (Patent n: user.getBelow())
+			{
+				if (Graphs.superDegree(g, n) > maxDegree)
+				{
+					bottom = n;
+					maxDegree = Graphs.superDegree(g, n);
+				}
+			}
+			return botPat(g, bottom);
+		}
+		else
+		{
+			return bottom;
+		}
+			
+	}
 }

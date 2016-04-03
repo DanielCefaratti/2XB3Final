@@ -29,12 +29,12 @@ public class DepthPathing {
         return marked[v];
     }
 
-    public Iterable<Integer> pathTo(Patent v) {
+    public Iterable<Patent> pathTo(Patent v) {
         if (!hasPathTo(v.getId())) return null;
-        Stack<Integer> path = new Stack<Integer>();
+        Stack<Patent> path = new Stack<Patent>();
         for (Patent x = v; x != s; x = edgeTo[x.getId()])
-            path.push(x.getId());
-        path.push(s.getId());
+            path.push(x);
+        path.push(s);
         return path;
     }
 
