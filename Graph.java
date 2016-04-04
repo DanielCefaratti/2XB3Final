@@ -30,8 +30,8 @@ public class Graph {
 
     public void addEdge(Patent v, Patent w){
     		adj.get(v.getId()).add(w); // Add w to v’s list.
-    		v.addBelow(w);
-    		w.addAbove(v);
+    		//v.addAbove(w);
+    		//w.addAbove(v);
         	nE++;
     }
 

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Patent
 {
-	private ArrayList<Patent> above;
-	private ArrayList<Patent> below;
+	private ArrayList<Patent> above = new ArrayList<Patent>();
+	private ArrayList<Patent> below = new ArrayList<Patent>();
 	private int id;
 	
 	public Patent(int id)
@@ -39,5 +39,14 @@ public class Patent
 	public void addBelow(Patent p)
 	{
 		below.add(p);
+	}
+	
+	public boolean isEmpty()
+	{
+		if(id == -1)
+		{
+			return true;
+		}
+		else return false;
 	}
 }

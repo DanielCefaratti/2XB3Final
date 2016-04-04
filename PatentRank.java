@@ -8,37 +8,33 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class PatentRank {
-	private static int numPatent = 4551941;
-	private static ArrayList<Patent> masterList = new ArrayList<Patent>(numPatent);
+	private static int numPatent = 6009555;
+	private static ArrayList<Patent> masterList = new ArrayList<Patent>();
 	private static ArrayList<Patent> topLevel = new ArrayList<Patent>();
 	private static DepthPathing dfs;
 	private static Patent user = new Patent(0);
 	
 public static void main(String[] args) throws IOException{
-    	
-        
-        // Test ~20% total patent data (January 1, 1963 to December 30, 1999)
-        Graph graph = new Graph(4551941);
-        File f = new File("patentSlice.txt");
-        
         // Full Patent data
-//         Graph graph = new Graph(6009555);
-//         File f = new File("patentDat.txt");
+		Graph graph = new Graph(numPatent);
+		File f = new File("patentDat.txt");
         
         
     	Scanner s = new Scanner(f);
     	int index = 0;
+    	int tempInt = 0;
+    	initPatents(masterList, numPatent);
     	while(s.hasNextLine()){
 			String connection = s.nextLine();
 			String[] connections = {};
 			if(!connection.isEmpty()){
-				connections = connection.split("//s*");
+				connections = connection.split("\\s+");
 			}
+			Patent to = new Patent(0);
+			Patent from = new Patent(0);
 			int p1 = Integer.parseInt(connections[1]);
 			int p0 = Integer.parseInt(connections[0]);
-			Patent to;
-			Patent from;
-			if (masterList.get(p1) == null)//if the index contains no node
+			if (masterList.get(p1).isEmpty())//if the index contains no node
 			{
 				to = new Patent(p1);//make a new node
 				masterList.set(p1, to);//add to master list
@@ -48,25 +44,28 @@ public static void main(String[] args) throws IOException{
 			{
 				to = masterList.get(p1);
 			}
-			if (masterList.get(p0) == null)//if masterlist does not contain node
+			if (masterList.get(p0).isEmpty())//if masterlist does not contain node
 			{
 				from = new Patent(p0);//make new node
 				masterList.set(p0, from);//add node to master list
 			}
-			else
+		 	else
 			{
 				from = masterList.get(p0);//set from
 				if (topLevel.contains(from))//remove from in the top level list if it exists
 				{
-					topLevel.remove(from);
+					//topLevel.remove(from);
 				}
 			}
-			
+			//System.out.println(p0);
 			graph.addEdge(from, to);
+			tempInt++;
+			
+			
 		}
         dfs = new DepthPathing(graph, user);
-        System.out.print(graph.toString());
-        
+        System.out.print("done");
+        /*
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Enter patent nummber to check Score, or q to quit");
         
@@ -81,8 +80,16 @@ public static void main(String[] args) throws IOException{
 
             
             //System.out.println(Graphs.superDegree(graph, Integer.parseInt(input)));
-         }
+         }*/
     }
+	public static void initPatents(ArrayList<Patent> list, int numPatent)
+	{
+		Patent temp = new Patent(-1);
+		for(int i=0; i<= numPatent; i++)
+		{
+			list.add(temp);
+		}
+	}
 	//get the top most patent
 	public Patent topPat(DepthPathing dp)
 	{
