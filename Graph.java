@@ -11,8 +11,6 @@ import java.util.Scanner;
 public class Graph {
 	
     private ArrayList<ArrayList<Patent>> adj;
-  
-    
     private int nV = 0;
     private int nE = 0;
 
@@ -29,9 +27,9 @@ public class Graph {
     }
 
     public void addEdge(Patent v, Patent w){
-    		adj.get(v.getId()).add(w); // Add w to v’s list.
-    		//v.addAbove(w);
-    		//w.addAbove(v);
+    		adj.get(w.getId()).add(v); // Add w to v’s list.
+    		v.addAbove(w);
+    		w.addBelow(v);
         	nE++;
     }
 

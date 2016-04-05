@@ -23,22 +23,28 @@ public static void main(String[] args) throws IOException{
     	Scanner s = new Scanner(f);
     	int index = 0;
     	int tempInt = 0;
+    	Patent to = new Patent(0);
+		Patent from = new Patent(0);
+		Patent empty = new Patent(-1);
+		int p1;
+		int p0;
     	initPatents(masterList, numPatent);
+    	initPatents(topLevel, numPatent);
     	while(s.hasNextLine()){
 			String connection = s.nextLine();
 			String[] connections = {};
 			if(!connection.isEmpty()){
 				connections = connection.split("\\s+");
 			}
-			Patent to = new Patent(0);
-			Patent from = new Patent(0);
-			int p1 = Integer.parseInt(connections[1]);
-			int p0 = Integer.parseInt(connections[0]);
+			to = new Patent(0);
+			from = new Patent(0);
+			p1 = Integer.parseInt(connections[1]);
+			p0 = Integer.parseInt(connections[0]);
 			if (masterList.get(p1).isEmpty())//if the index contains no node
 			{
 				to = new Patent(p1);//make a new node
 				masterList.set(p1, to);//add to master list
-				topLevel.add(to);//add to top level list
+				topLevel.set(p1, to);//add to top level list
 			}
 			else
 			{
@@ -52,20 +58,20 @@ public static void main(String[] args) throws IOException{
 		 	else
 			{
 				from = masterList.get(p0);//set from
-				if (topLevel.contains(from))//remove from in the top level list if it exists
-				{
-					//topLevel.remove(from);
-				}
+				topLevel.set(p0,empty);
 			}
 			//System.out.println(p0);
 			graph.addEdge(from, to);
+			//System.out.println(tempInt);
 			tempInt++;
 			
 			
 		}
+    	changeTop();
         dfs = new DepthPathing(graph, user);
-        System.out.print("done");
-        /*
+        System.out.println("done");
+        System.out.println(masterList.size());
+        System.out.println(topLevel.size());
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Enter patent nummber to check Score, or q to quit");
         
@@ -79,9 +85,23 @@ public static void main(String[] args) throws IOException{
             }
 
             
-            //System.out.println(Graphs.superDegree(graph, Integer.parseInt(input)));
-         }*/
+            System.out.println(Graphs.superDegree(graph, masterList.get(Integer.parseInt(input))));
+         }
     }
+
+	public static void changeTop()
+	{
+		ArrayList<Patent> list = new ArrayList<Patent>();
+		for(int i = 1; i< topLevel.size(); i++)
+		{
+			//System.out.println(i);
+			if (topLevel.get(i).isEmpty() == false)
+			{
+				list.add(topLevel.get(i));
+			}
+		}
+		topLevel = list;
+	}
 	public static void initPatents(ArrayList<Patent> list, int numPatent)
 	{
 		Patent temp = new Patent(-1);
