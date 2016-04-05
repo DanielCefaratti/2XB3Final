@@ -29,6 +29,7 @@ public class DepthPathing {
             }
         }
     }
+    
     private void dfsUp(Graph G, Patent v) {
         markedUp[v.getId()] = true;
         for (Patent w : G.adjUp(v.getId())) {
