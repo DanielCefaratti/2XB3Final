@@ -83,9 +83,28 @@ public static void main(String[] args) throws IOException{
                System.out.println("Exiting.");
                return;
             }
-
+            int topId = topPat(graph,masterList.get(Integer.parseInt(input)), empty).getId();
+            if(topId == -1)
+            {
+            	System.out.println("Top: No Top");
+            }
+            else
+            {
+            	System.out.println("Top: " + topId);
+            }
             
+            System.out.print("Your Score: ");
             System.out.println(Graphs.superDegree(graph, masterList.get(Integer.parseInt(input))));
+            int bottomId = botPat(graph, masterList.get(Integer.parseInt(input)), empty).getId();
+            if (bottomId == -1)
+            {
+            	System.out.println("Bottom: No Bottom");
+            }
+            {
+            	System.out.println("Bottom: " + bottomId);
+            }
+            
+            
          }
     }
 
@@ -111,30 +130,54 @@ public static void main(String[] args) throws IOException{
 		}
 	}
 	//get the top most patent
-	public Patent topPat(DepthPathing dp)
+	public static Patent topPat(DepthPathing dp, Graph G)
 	{
 		Patent top = new Patent(0);
-		int index = 0;
+		int max = 0;
 		for (Patent n:topLevel)
 		{
-			int index1 = 0;
-			for (Patent v:dp.pathTo(n))
+			System.out.println("Hi");
+			if (dp.hasPathTo(n.getId())!= false)
 			{
-				index1++;
+				
+				int temp = Graphs.superDegree(G, n);
+				if (temp > max)
+				{
+					top = n;
+					max = temp;
+				}
 			}
-			if (index1 > index)
-			{
-				index = index1;
-				top = n;
-			}
+			
 		}
 		return top;
 	}
-	//get the bottom most patent recursively
-	public Patent botPat(Graph g, Patent user)
+	public static Patent topPat(Graph G, Patent user, Patent top)
 	{
-		Patent bottom = new Patent(0);
 		int maxDegree = 0;
+		Patent temp = new Patent(0);
+		if (!user.getAbove().isEmpty())
+		{
+			for (Patent n: user.getAbove())
+			{
+				if (Graphs.superDegree(G, n) > maxDegree)
+				{
+					top = n;
+					temp = n;
+					maxDegree = Graphs.superDegree(G, n);
+				}
+			}
+			return topPat(G, temp, top);
+		}
+		else
+		{
+			return top;
+		}
+	}
+	//get the bottom most patent recursively
+	public static Patent botPat(Graph g, Patent user, Patent bottom)
+	{
+		int maxDegree = 0;
+		Patent temp = new Patent(0);
 		if (!user.getBelow().isEmpty())
 		{
 			for (Patent n: user.getBelow())
@@ -142,10 +185,11 @@ public static void main(String[] args) throws IOException{
 				if (Graphs.superDegree(g, n) > maxDegree)
 				{
 					bottom = n;
+					temp = n;
 					maxDegree = Graphs.superDegree(g, n);
 				}
 			}
-			return botPat(g, bottom);
+			return botPat(g, temp, bottom);
 		}
 		else
 		{
